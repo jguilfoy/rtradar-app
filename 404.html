@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RTRadar</title><link rel="stylesheet" href="/style.css"><link rel="icon" href="/icon.png"></head>
+<body><main>
+<header><img src="/icon.png" alt="RTRadar icon"><div><h1>RTRadar</h1><div class="muted">Live NEXRAD weather radar, in 2D and 3D</div></div></header>
+
+<!-- Every unknown path lands here, including radar links opened where RTRadar isn't installed. -->
+<div class="card" id="link" hidden>
+<strong id="what">A radar link</strong>
+<p class="muted" id="detail"></p>
+<p><a id="open" href="#">Open in RTRadar</a></p>
+<p class="muted">Don't have it yet? RTRadar is coming soon to the App Store.</p>
+</div>
+
+<div class="card" id="missing" hidden>
+<strong>Page not found.</strong> <a href="/">RTRadar support</a>
+</div>
+
+<script>
+(function () {
+  var path = location.pathname, query = new URLSearchParams(location.search);
+  var kind = path.match(/^\/(live|at)\/?$/), storm = path.match(/^\/storm\/([a-z0-9-]+)\/?$/i);
+  if (!kind && !storm) { document.getElementById('missing').hidden = false; return; }
+  var what = document.getElementById('what'), detail = document.getElementById('detail');
+  if (storm) {
+    what.textContent = 'A storm from RTRadar’s History';
+    detail.textContent = storm[1].replace(/-/g, ' ');
+  } else if (kind[1] === 'live') {
+    what.textContent = 'Live radar at a place';
+    detail.textContent = query.get('ll') || '';
+  } else {
+    what.textContent = 'Recorded radar from a moment';
+    var t = new Date(query.get('t') || '');
+    detail.textContent = isNaN(t) ? '' : t.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  }
+  document.getElementById('open').href = 'rtradar:/' + path + location.search;
+  document.getElementById('link').hidden = false;
+})();
+</script>
+<p class="muted"><a href="/privacy.html">Privacy policy</a> · © 2026 Ignite Development LLC</p>
+</main></body></html>

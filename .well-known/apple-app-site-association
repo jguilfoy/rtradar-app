@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["QTY3RP9N23.com.jguilfoy.RTRadar"],
+        "components": [
+          { "/": "/live", "comment": "A place on live radar" },
+          { "/": "/at", "comment": "A place at a recorded moment" },
+          { "/": "/storm/*", "comment": "A storm from the History library" }
+        ]
+      }
+    ]
+  }
+}
